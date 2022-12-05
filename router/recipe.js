@@ -1,0 +1,13 @@
+/* eslint-disable no-unused-vars */
+const express = require('express')
+const routerRecipe = express.Router()
+const {recipeController} = require('../controller/recipe')
+const {upload} = require('../middleware/upload')
+
+routerRecipe.get('/',recipeController.getRecipe)
+routerRecipe.get('/:id',recipeController.getRecipeDetail)
+routerRecipe.post('/',upload.single('photo'),recipeController.insert)
+
+
+
+module.exports = routerRecipe
