@@ -13,7 +13,7 @@ const recipeController = {
         const sort = req.query.sort || "ASC"
         const search = req.query.search || '';
         
-        ModelRecipe.selectDataRecipe({limit,offset,sort,sortby,search})
+        ModelRecipe.selectDataRecipe({limit,offset,sort,sortby,search })
         .then(result => response(res,200,true,result.rows,'get data sukses'))
         .catch(err => response(res,401,false,err,'get data fail'))
     },
@@ -22,6 +22,12 @@ const recipeController = {
         ModelRecipe.selectDataRecipeDetail(req.params.id)
         .then(result => response(res,200,true,result.rows,'get data sukses'))
         .catch(err => response(res,401,false,err,'get data fail'))
+    },
+
+    delete: (req,res,next) => {
+        ModelRecipe.deleteRecipe(req.params.id)
+        .then(result => response(res,200,true,result.rows,'delete data sukses'))
+        .catch(err => response(res,401,false,err,'delete data fail'))
     },
 
      insert : (req,res,next) => {

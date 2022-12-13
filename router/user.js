@@ -11,7 +11,8 @@ router.post('/register',UsersController.insert)
 router.post('/login',UsersController.login)
 router.put('/update/:id',upload.single('photo'),UsersController.update)
 router.get('/:id',UsersController.getData)
-router.get('/:email',UsersController.email)
+router.post('/email/:email/:otp',UsersController.otp)
+router.post('/email/verif',UsersController.otp)
 
 
 

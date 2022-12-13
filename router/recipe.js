@@ -6,6 +6,7 @@ const {upload} = require('../middleware/upload')
 
 routerRecipe.get('/',recipeController.getRecipe)
 routerRecipe.get('/:id',recipeController.getRecipeDetail)
+routerRecipe.delete('/:id',recipeController.delete)
 routerRecipe.post('/',upload.single('photo'),recipeController.insert)
 
 
