@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 const { response } = require('../middleware/common');
 const  ModelRecipe = require('../models/recipe')
+const { v4: uuidv4, stringify } = require('uuid'); //membuat id unik
 
 
 const recipeController = {
@@ -9,13 +10,13 @@ const recipeController = {
         const page = Number(req.query.page) || 1 
         const limit = Number(req.query.limit) || 10 
         const offset = (page - 1) * limit 
-        const sortby = req.query.sortby || "title" 
-        const sort = req.query.sort || "ASC"
+        const sortby = req.query.sortby || "id" 
+        const sort = req.query.sort || "DESC"
         const search = req.query.search || '';
         
-        ModelRecipe.selectDataRecipe({limit,offset,sort,sortby,search })
+        ModelRecipe.selectDataRecipe({limit,offset,sort,sortby,search,page })
         .then(result => response(res,200,true,result.rows,'get data sukses'))
-        .catch(err => response(res,401,false,err,'get data fail'))
+        .catch(err => response(res,401,false,err.message,'get data fail'))
     },
 
     getRecipeDetail : (req,res,next) => {
@@ -32,6 +33,7 @@ const recipeController = {
 
      insert : (req,res,next) => {
 
+        req.body.id = uuidv4()
         const Port = process.env.PORT //env
         const Host = process.env.HOST //env
         const photo = req.file.filename //multer

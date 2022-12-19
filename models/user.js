@@ -59,8 +59,20 @@ const getDataId = (id) => {
     }))
 }
 
+const getData = () => {
+    return new Promise((resolve, reject) => 
+    //Pool.query(`SELECT user_recipe.id,user_recipe.name,user_recipe.password,user_recipe.email,user_recipe.phone_number,user_recipe.photo FROM user_recipe WHERE user_recipe.id='${id}'`,(err,result)=>{
+        Pool.query(`SELECT * FROM user_recipe`,(err,result)=>{
+        if(!err){
+            resolve(result)
+        } else {
+            reject(err)
+        }
+    }))
+}
 
 
 
 
-module.exports = {create,findEmail,updateUser,getDataId,verification}
+
+module.exports = {create,findEmail,updateUser,getDataId,verification, getData}

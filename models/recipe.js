@@ -1,9 +1,10 @@
 const Pool =require ('../config/db')
 
-const selectDataRecipe = ({limit,offset,sort,sortby,search}) => {
+const selectDataRecipe = ({limit,offset,sort,sortby,search, page}) => {
 
-    return Pool.query(`SELECT * FROM recipe`);
-    //return Pool.query(`SELECT recipe.id,recipe.title,recipe.ingredients,recipe.vidio,recipe.photo,recipe.description,comment.id as comment FROM recipe JOIN comment ON recipe.comment_id = comment.id WHERE (recipe.title) ILIKE ('%${search}%') ORDER BY recipe.${sortby} ${sort} LIMIT ${limit} OFFSET ${offset} `)
+    // return Pool.query(`SELECT * FROM recipe`);
+    // return Pool.query(`SELECT recipe.id,recipe.title,recipe.ingredients,recipe.vidio,recipe.photo,recipe.description,comment.id as comment FROM recipe JOIN comment ON recipe.comment_id = comment.id WHERE (recipe.title) ILIKE ('%${search}%') ORDER BY recipe.${sortby} ${sort} LIMIT ${limit} OFFSET ${offset} `)
+    return Pool.query(`SELECT recipe.id,recipe.title,recipe.ingredients,recipe.vidio,recipe.photo,recipe.description,recipe.comment_id FROM recipe WHERE (recipe.title) ILIKE ('%${search}%') ORDER BY recipe.${sortby} ${sort} LIMIT ${limit} OFFSET ${offset} `)
 
 }
 

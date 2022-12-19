@@ -1,5 +1,5 @@
 const { response } = require('../middleware/common'); //untuk menghubungkan ke eror handling yang telah dibuat
-const { create, findEmail, updateUser, getDataId,verification } = require('../models/user') //untuk menguhungkan fungsion create dan findEmail
+const { create, findEmail, updateUser, getDataId,verification, getData } = require('../models/user') //untuk menguhungkan fungsion create dan findEmail
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4, stringify } = require('uuid'); //membuat id unik
 const { generateToken } = require('../helper/auth') //membuat token
@@ -122,9 +122,18 @@ const UsersController = {
         }
     },
 
-    getData: async (req, res, next) => {
+    getDataDetail: async (req, res, next) => {
         try {
             const get = await getDataId(req.params.id)
+            response(res, 200, true, get.rows, 'get users success')
+        } catch (err) {
+            response(res, 404, false, err, 'get users fail')
+        }
+    },
+
+    getDataAll: async (req, res, next) => {
+        try {
+            const get = await getData()
             response(res, 200, true, get.rows, 'get users success')
         } catch (err) {
             response(res, 404, false, err, 'get users fail')
