@@ -5,9 +5,15 @@ CREATE TABLE recipe (
     ingredients VARCHAR ,
     vidio VARCHAR,
     photo VARCHAR,
-    description VARCHAR,
-    comment_id VARCHAR
+    description VARCHAR, 
 );
+
+ALTER TABLE recipe ADD COLUMN user_recipe_id VARCHAR REFERENCES user_recipe(id);
+SELECT comment.id,comment.comment, user_recipe.id as user_recipe FROM comment INNER JOIN user_recipe ON comment.user_recipe_id = user_recipe.id;
+INSERT INTO comment(id,user_recipe_id,comment) VALUES('5','1','ini contoh');
+
+SELECT recipe.id,recipe.title,recipe.ingredients,recipe.vidio,recipe.photo,recipe.description,comment.comment as comment,user_recipe.name as user_recipe FROM recipe INNER JOIN comment ON recipe.comment_id = comment.id INNER JOIN user_recipe ON recipe.user_recipe_id = user_recipe.id;
+
 
 ALTER TABLE recipe DROP COLUMN comment_id;
 ALTER TABLE recipe ADD COLUMN comment_id INT;
@@ -17,13 +23,28 @@ AlTER TABLE recipe add foreign key (comment_id) REFERENCES comment(id);
  INSERT INTO recipe (id,title,ingredients,vidio,photo,description,comment_id) VALUES (1,'tes','tes','vidio','phot','description','1');
 
 CREATE TABLE  comment (
-    id SERIAL PRIMARY KEY,
+    id VARCHAR PRIMARY KEY,
+    comment VARCHAR,
+    user_recipe_id VARCHAR REFERENCES user_recipe(id)
+);
+
+CREATE TABLE  commentTes (
+    id VARCHAR PRIMARY KEY,
     comment VARCHAR,
     user_recipe_id VARCHAR 
 );
 
-ALTER TABLE comment ADD COLUMN user_recipe_id INT;
-AlTER TABLE comment add foreign key (user_recipe_id) REFERENCES user_recipe(id);
+SELECT comment.id,comment.comment, user_recipe.id as user_recipe FROM comment INNER JOIN user_recipe ON comment.user_recipe_id = user_recipe.id;
+
+
+ALTER TABLE comment ADD COLUMN user_recipe_id VARCHAR REFERENCES user_recipe(id);
+
+SELECT transactions.email,products.name as products_name,
+transactions.amount,products.price,transactions.total,
+payment_status.name as status FROM transactions JOIN products 
+ON transactions.products_id = products.id JOIN payment_status
+ON transactions.status = payment_status.id; 
+
 
 INSERT INTO comment (id,comment,user_recipe) VALUES (1,'tes','1');
 
@@ -39,6 +60,7 @@ CREATE TABLE user_recipe (
 );
 
 
+ALTER TABLE user_recipe ADD COLUMN comment_id VARCHAR REFERENCES comment(id);
 
 
-
+SELECT user_recipe.id,user_recipe.name,user_recipe.password,user_recipe.email,user_recipe.phone_number,user_recipe.photo,comment.comment as comment FROM user_recipe INNER JOIN comment ON user_recipe.comment_id = comment.id;

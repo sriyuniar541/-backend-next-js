@@ -1,30 +1,22 @@
-const Pool =require ('../config/db')
+const Pool = require ('../config/db')
+
 
 const selectDataRecipe = ({limit,offset,sort,sortby,search, page}) => {
-
-    // return Pool.query(`SELECT * FROM recipe`);
-    // return Pool.query(`SELECT recipe.id,recipe.title,recipe.ingredients,recipe.vidio,recipe.photo,recipe.description,comment.id as comment FROM recipe JOIN comment ON recipe.comment_id = comment.id WHERE (recipe.title) ILIKE ('%${search}%') ORDER BY recipe.${sortby} ${sort} LIMIT ${limit} OFFSET ${offset} `)
-    return Pool.query(`SELECT recipe.id,recipe.title,recipe.ingredients,recipe.vidio,recipe.photo,recipe.description,recipe.comment_id FROM recipe WHERE (recipe.title) ILIKE ('%${search}%') ORDER BY recipe.${sortby} ${sort} LIMIT ${limit} OFFSET ${offset} `)
-
+    return Pool.query(`SELECT * FROM recipe ORDER BY recipe.${sortby} ${sort} LIMIT ${limit} OFFSET ${offset}`);
 }
-
+const selectDataUser = ({limit,offset,sort,sortby,search, page,user_recipe}) => {
+    return Pool.query(`SELECT recipe.id,recipe.title,recipe.ingredients,recipe.vidio,recipe.photo,recipe.description,user_recipe.id as user_recipe_id FROM recipe INNER JOIN user_recipe ON recipe.user_recipe_id = user_recipe.id WHERE user_recipe.id='${user_recipe}'`);
+}
 const selectDataRecipeDetail = (id) => {
-    // return Pool.query(`SELECT recipe.id,recipe.title,recipe.ingredients,recipe.vidio,recipe.photo,recipe.description,comment.id as comment FROM recipe JOIN comment ON recipe.comment_id = comment.id WHERE recipe.id='${id}' `);  
-    return Pool.query(`SELECT * FROM recipe  WHERE recipe.id='${id}'`);  
-   
+    return Pool.query(`SELECT recipe.id,recipe.title,recipe.ingredients,recipe.vidio,recipe.photo,recipe.description FROM recipe WHERE recipe.id='${id}' `);  
 }
-
 const deleteRecipe = (id) => {
-    // return Pool.query(`SELECT recipe.id,recipe.title,recipe.ingredients,recipe.vidio,recipe.photo,recipe.description,comment.id as comment FROM recipe JOIN comment ON recipe.comment_id = comment.id WHERE recipe.id='${id}' `);  
     return Pool.query(`DELETE FROM recipe  WHERE recipe.id='${id}'`);  
-   
 }
-
 const insertDataRecipe = (data) => {
-    const {id,title,ingredients,vidio,photo,description,comment_id} = data;
-    return Pool.query(`INSERT INTO recipe(id,title,ingredients,vidio,photo,description,comment_id) VALUES ('${id}','${title}','${ingredients}','${vidio}','${photo}','${description}',${comment_id})`);   
+    const {id,title,ingredients,vidio,photo,description,user_recipe_id} = data;
+    return Pool.query(`INSERT INTO recipe(id,title,ingredients,vidio,photo,description,user_recipe_id) VALUES('${id}','${title}','${ingredients}','${vidio}','${photo}','${description}','${user_recipe_id}')`);   
 }
 
 
-
-module.exports = {selectDataRecipe, selectDataRecipeDetail, insertDataRecipe, deleteRecipe}
+module.exports = {selectDataRecipe, selectDataRecipeDetail, insertDataRecipe, deleteRecipe,selectDataUser}

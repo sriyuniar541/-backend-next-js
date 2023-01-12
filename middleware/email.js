@@ -1,39 +1,45 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        type: 'OAuth2',
-        user: process.env.MAIL_USERNAME,
-        pass: process.env.MAIL_PASSWORD,
-        clientId: process.env.OAUTH_CLIENTID,
-        clientSecret: process.env.OAUTH_CLIENT_SECRET,
-        refreshToken: process.env.OAUTH_REFRESH_TOKEN
-        
-        
-    }
+
+
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    type: "OAuth2",
+    user: process.env.MAIL_USERNAME,
+    pass: process.env.MAIL_PASSWORD,
+    clientId: process.env.OAUTH_CLIENTID,
+    clientSecret: process.env.OAUTH_CLIENT_SECRET,
+    refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+  },
 });
 
+// let transporter = nodemailer.createTransport({
+//     host: "smtp.zoho.com",
+//     secure: true,
+//     port: 465,
+//     auth: {
+//       user: "noreply@projectpijar.site",
+//       pass:  "yqJN1sCZcrWB",
+      
+//     },
+//   });
 
-module.exports = (email,subject,url,name) => {
-        
-        const mailOptions = {
-            from: process.env.MAIL_USERNAME,
-            to: email,
-            subject:` <div>${subject} is your otp`,
-            text: `hell ${name} \n Thank you for you join please confirm your email by cliking on the following link ${url} </div>`  
-        };
-        
-        transporter.sendMail(mailOptions, function(err,data) {
-         if(err) {
-            console.log(err,'email not send')
-            console.log('error',err)
-         } else {
-            console.log('email sending successfully')
-            return 'email sending successfully'
-         }
-    })
-}
+module.exports = (email, subject, text) => {
+  let mailOptions = {
+    from: process.env.MAIL_USERNAME,
+    to: email,
+    subject: subject,
+    text: text,
+  };
 
-
-
+  transporter.sendMail(mailOptions, function (err, data) {
+    if (err) {
+      console.log("Error " + err);
+      console.log("email not sent!");
+    } else {
+      console.log("Email sent successfully");
+      return "email sent successfully";
+    }
+  });
+};

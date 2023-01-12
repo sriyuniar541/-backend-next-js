@@ -5,7 +5,6 @@ const { v4: uuidv4, stringify } = require('uuid'); //membuat id unik
 
 
 const recipeController = {
-
     getRecipe : (req,res,next) => {
         const page = Number(req.query.page) || 1 
         const limit = Number(req.query.limit) || 10 
@@ -18,46 +17,55 @@ const recipeController = {
         .then(result => response(res,200,true,result.rows,'get data sukses'))
         .catch(err => response(res,401,false,err.message,'get data fail'))
     },
-
+    getRecipeUser : (req,res,next) => {
+        const page = Number(req.query.page) || 1 
+        const limit = Number(req.query.limit) || 10 
+        const offset = (page - 1) * limit 
+        const sortby = req.query.sortby || "id" 
+        const sort = req.query.sort || "DESC"
+        const search = req.query.search || ''
+        const user_recipe = req.payload.id
+        
+        ModelRecipe.selectDataUser({limit,offset,sort,sortby,search,page,user_recipe })
+        .then(result => response(res,200,true,result.rows,'get data sukses'))
+        .catch(err => response(res,401,false,err.message,'get data fail'))
+    },
     getRecipeDetail : (req,res,next) => {
         ModelRecipe.selectDataRecipeDetail(req.params.id)
         .then(result => response(res,200,true,result.rows,'get data sukses'))
         .catch(err => response(res,401,false,err,'get data fail'))
     },
-
     delete: (req,res,next) => {
         ModelRecipe.deleteRecipe(req.params.id)
         .then(result => response(res,200,true,result.rows,'delete data sukses'))
         .catch(err => response(res,401,false,err,'delete data fail'))
     },
-
-     insert : (req,res,next) => {
-
-        req.body.id = uuidv4()
-        const Port = process.env.PORT //env
-        const Host = process.env.HOST //env
-        const photo = req.file.filename //multer
+    insert :  (req,res,next) => {
+        // const {photo :[photo], vidio :[vidio]} = req.files
+        const Port = process.env.PORT
+        const Host = process.env.HOST
+        const photo = req.file.filename
         const uri = `http://${Host}:${Port}/img/${photo}`
-        req.body.photo = uri
-        req.body.title = req.body.title
-        req.body.ingredients = req.body.ingredients
-        req.body.vidio = req.body.vidio
-        req.body.description = req.body.description
-        req.body.comment_id = req.body.comment_id
-
-        console.log(req.body.title)
-        console.log(req.body.ingredients)
-        console.log(req.body.vidio)
-        console.log(req.body.photo)
-        console.log(req.body.description)
-        console.log(req.body.comment_id)
-        
-        ModelRecipe.insertDataRecipe(req.body)
+        const id =  uuidv4()
+        const data = {
+            id,
+            // photo : photo.path,
+            photo:  uri,
+            title : req.body.title,
+            ingredients : req.body.ingredients,
+            // vidio : vidio.path,
+            vidio : req.body.vidio,
+            description : req.body.description,
+            user_recipe_id : req.payload.id   
+        }
+        console.log(data)
+        // console.log(filename)
+        ModelRecipe.insertDataRecipe(data)
         .then(result => response(res,200,true,result.rows,'insert data sukses'))
         .catch(err => response(res,401,false,err.message,'insert data fail'))
     },
 }
 
-//untuk mengexport produk contol
+
 exports.recipeController = recipeController
 

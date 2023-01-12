@@ -13,7 +13,6 @@ const create = (data) => {
         })
     )
 }
-
 const findEmail = (email) => {
     return new Promise((resolve, reject) => 
     Pool.query(`SELECT * FROM user_recipe where email='${email}'`,(err,result)=>{
@@ -24,7 +23,6 @@ const findEmail = (email) => {
         }
     }))
 }
-
 const verification = (email) => {
     return new Promise((resolve, reject) => 
     Pool.query(`UPDATE user_recipe SET verif=1 WHERE email ='${email}'`,(err,result)=>{
@@ -35,7 +33,6 @@ const verification = (email) => {
         }
     }))
 }
-
 const updateUser = (id,body) => {
     return new Promise((resolve, reject) => 
     Pool.query(`UPDATE user_recipe SET password='${body.password}',photo='${body.photo}' WHERE id='${id}'`,(err,result)=>{
@@ -71,7 +68,20 @@ const getData = () => {
     }))
 }
 
-
+// const changePassword = (email, password) => {
+//     return new Promise((resolve, reject) =>
+//       Pool.query(
+//         `UPDATE tbl_employee SET password='${password}' WHERE email='${email}'`,
+//         (err, result) => {
+//           if (!err) {
+//             resolve(result);
+//           } else {
+//             reject(err);
+//           }
+//         }
+//       )
+//     );
+//   };
 
 
 
