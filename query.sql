@@ -64,3 +64,61 @@ ALTER TABLE user_recipe ADD COLUMN comment_id VARCHAR REFERENCES comment(id);
 
 
 SELECT user_recipe.id,user_recipe.name,user_recipe.password,user_recipe.email,user_recipe.phone_number,user_recipe.photo,comment.comment as comment FROM user_recipe INNER JOIN comment ON user_recipe.comment_id = comment.id;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+==========data baru==================
+
+CREATE TABLE user_recipe (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    password VARCHAR NOT NULL,
+    email VARCHAR NOT NULL,
+    phone_number VARCHAR,
+    photo VARCHAR,
+    verif VARCHAR,
+    otp VARCHAR
+);
+
+CREATE TABLE recipe (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR, 
+    ingredients VARCHAR ,
+    vidio VARCHAR,
+    photo VARCHAR,
+    description VARCHAR, 
+    user_recipe_id VARCHAR REFERENCES user_recipe(id)
+);
+CREATE TABLE  comment (
+    id VARCHAR PRIMARY KEY,
+    comment VARCHAR,
+    user_recipe_id VARCHAR REFERENCES user_recipe(id),
+    recipe_id VARCHAR REFERENCES recipe(id)
+);
+
+CREATE TABLE  savedrecipe (
+    id VARCHAR PRIMARY KEY,
+    recipe_id VARCHAR REFERENCES recipe(id),
+    user_recipe_id VARCHAR REFERENCES user_recipe(id)
+);
+CREATE TABLE  likerecipe (
+    id VARCHAR PRIMARY KEY,
+    recipe_id VARCHAR REFERENCES recipe(id),
+    user_recipe_id VARCHAR REFERENCES user_recipe(id)
+);
