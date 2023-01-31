@@ -841,7 +841,7 @@ Response 200
 
 
 ## Related Project
-* [`Backend Project Telegram `](https://github.com/sriyuniar541/Apk-Recipe-be)
+* [`Backend Project Recipe `](https://github.com/sriyuniar541/Apk-Recipe-be)
 
 ## Contact
   * Sri Yuniar [@sriyuniar541](https://github.com/sriyuniar541)
