@@ -41,7 +41,7 @@ Application for chat
 Clone the project
 
 ```bash
-  git clone https://github.com/sriyuniar541/Apk-Telegram-socket-io-Be
+  git clone https://github.com/sriyuniar541/Apk-Recipe-be
 ```
 
 Go to the project directory
