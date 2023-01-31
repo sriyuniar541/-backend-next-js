@@ -47,7 +47,7 @@ Clone the project
 Go to the project directory
 
 ```bash
-  cd Apk-Telegram-socket-io-Be
+  cd Apk-Recipe-be
 ```
 
 Install dependencies
