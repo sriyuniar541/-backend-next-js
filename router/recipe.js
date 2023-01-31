@@ -1,7 +1,7 @@
 const express = require('express')
 const routerRecipe = express.Router()
 const {recipeController} = require('../controller/recipe')
-const {upload} = require('../middleware/upload')
+const upload = require('../middleware/upload')
 const {protect} = require ('../middleware/auth')
 // const multer = require('multer')
 // const uploade = multer()

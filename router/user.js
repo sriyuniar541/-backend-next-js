@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const {UsersController}= require('../controller/user')
-const {upload} = require('../middleware/upload')
+const upload = require('../middleware/upload')
 const multer = require('multer')
 const uploade = multer()
 const {protect} = require('../middleware/auth')

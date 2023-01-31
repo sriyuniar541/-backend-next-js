@@ -2,6 +2,7 @@
 const { response } = require('../middleware/common');
 const  ModelRecipe = require('../models/recipe')
 const { v4: uuidv4, stringify } = require('uuid'); //membuat id unik
+const cloudinary = require('../config/cloudinary');
 
 
 const recipeController = {
@@ -44,13 +45,18 @@ const recipeController = {
         // const {photo :[photo], vidio :[vidio]} = req.files
         const Port = process.env.PORT
         const Host = process.env.HOST
-        const photo = req.file.filename
-        const uri = `http://${Host}:${Port}/img/${photo}`
+        // const photo = req.file.filename
+        // const uri = `http://${Host}:${Port}/img/${photo}`
+        const image =  cloudinary.uploader.upload(req.file.path, {
+            folder: 'recipe',
+          });
+  
+        
         const id =  uuidv4()
         const data = {
             id,
             // photo : photo.path,
-            photo:  uri,
+            photo:  image.url,
             title : req.body.title,
             ingredients : req.body.ingredients,
             // vidio : vidio.path,
@@ -62,7 +68,7 @@ const recipeController = {
         // console.log(filename)
         ModelRecipe.insertDataRecipe(data)
         .then(result => response(res,200,true,result.rows,'insert data sukses'))
-        .catch(err => response(res,401,false,err.message,'insert data fail'))
+        .catch(err => response(res,401,false,err,'insert data fail'))
     },
 }
 

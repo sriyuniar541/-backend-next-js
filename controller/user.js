@@ -6,6 +6,7 @@ const { generateToken , generateRefreshToken} = require('../helper/auth')
 const email = require('../middleware/email')
 const Port = process.env.PORT
 const Host = process.env.HOST
+const cloudinary = require('../config/cloudinary');
 
 
 
@@ -109,12 +110,15 @@ const UsersController = {
         try {
             let salt = bcrypt.genSaltSync(10);
             req.body.password = bcrypt.hashSync(req.body.password)
-            const Port = process.env.PORT
-            const Host = process.env.HOST
-            const photo = req.file.filename
-            const uri = `http://${Host}:${Port}/img/${photo}`
+            const image =  cloudinary.uploader.upload(req.file.path, {
+                folder: 'recipe',
+              });
+            // const Port = process.env.PORT
+            // const Host = process.env.HOST
+            // const photo = req.file.filename
+            // const uri = `http://${Host}:${Port}/img/${photo}`
             const id = (req.params.id)
-            req.body.photo = uri
+            req.body.photo = image.url
              console.log(req.body)
             // console.log(req.params.id)
 
