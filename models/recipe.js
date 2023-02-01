@@ -13,9 +13,17 @@ const selectDataRecipeDetail = (id) => {
 const deleteRecipe = (id) => {
     return Pool.query(`DELETE FROM recipe  WHERE recipe.id='${id}'`);  
 }
+
 const insertDataRecipe = (data) => {
     const {id,title,ingredients,vidio,photo,description,user_recipe_id} = data;
-    return Pool.query(`INSERT INTO recipe(id,title,ingredients,vidio,photo,description,user_recipe_id) VALUES('${id}','${title}','${ingredients}','${vidio}','${photo}','${description}','${user_recipe_id}')`);   
+    return new Promise((resolve, reject) => 
+    Pool.query(`INSERT INTO recipe(id,title,ingredients,vidio,photo,description,user_recipe_id) VALUES('${id}','${title}','${ingredients}','${vidio}','${photo}','${description}','${user_recipe_id}')`,(err,result)=>{
+        if(!err){
+            resolve(result)
+        } else {
+            reject(err)
+        }
+    }))
 }
 
 

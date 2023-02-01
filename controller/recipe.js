@@ -41,31 +41,27 @@ const recipeController = {
         .then(result => response(res,200,true,result.rows,'delete data sukses'))
         .catch(err => response(res,401,false,err,'delete data fail'))
     },
-    insert :  (req,res,next) => {
-        // const {photo :[photo], vidio :[vidio]} = req.files
-        const Port = process.env.PORT
-        const Host = process.env.HOST
-        // const photo = req.file.filename
-        // const uri = `http://${Host}:${Port}/img/${photo}`
-        const image =  cloudinary.uploader.upload(req.file.path, {
-            folder: 'recipe',
-          });
-  
-        
+    insert : async (req,res,next) => {
         const id =  uuidv4()
         const data = {
             id,
-            // photo : photo.path,
-            photo:  image.url,
             title : req.body.title,
             ingredients : req.body.ingredients,
-            // vidio : vidio.path,
             vidio : req.body.vidio,
             description : req.body.description,
             user_recipe_id : req.payload.id   
         }
+        if (req.file) {
+            const image = await cloudinary.uploader.upload(req.file.path, {
+              folder: 'telegram',
+            });
+    
+            data.photo = image.url;
+          } else {
+            data.photo = users.photo;
+          }
+          
         console.log(data)
-        // console.log(filename)
         ModelRecipe.insertDataRecipe(data)
         .then(result => response(res,200,true,result.rows,'insert data sukses'))
         .catch(err => response(res,401,false,err,'insert data fail'))

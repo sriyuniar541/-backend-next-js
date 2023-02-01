@@ -110,19 +110,20 @@ const UsersController = {
         try {
             let salt = bcrypt.genSaltSync(10);
             req.body.password = bcrypt.hashSync(req.body.password)
-            const image =  cloudinary.uploader.upload(req.file.path, {
-                folder: 'recipe',
-              });
-            // const Port = process.env.PORT
-            // const Host = process.env.HOST
-            // const photo = req.file.filename
-            // const uri = `http://${Host}:${Port}/img/${photo}`
             const id = (req.params.id)
-            req.body.photo = image.url
-             console.log(req.body)
-            // console.log(req.params.id)
-
+            
+              if (req.file) {
+                const image = await cloudinary.uploader.upload(req.file.path, {
+                  folder: 'telegram',
+                });
+        
+                req.body.photo = image.url;
+              } else {
+                req.body.photo = users.photo;
+              }
+        
             const updateUsers = await updateUser(id, req.body)
+            console.log(req.body)
             response(res, 200, true, updateUsers.rows, 'update users success')
         } catch (err) {
             response(res, 404, false, err.message, 'update users fail ')
