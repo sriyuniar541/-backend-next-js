@@ -11,7 +11,7 @@
     <a href="https://github.com/sriyuniar541/Apk-Recipe-be"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="===link deploy here =====">View Demo</a>
+    <a href="https://courageous-lime-jaguar.cyclic.app">View Demo</a>
   </p>
 </p>
 
